@@ -14,6 +14,9 @@ gain margin. The source can be built in Android, iOS, etc.
 * Add Bode plot, response plot and more analysis options
 * More test cases and test codes
 
+### Release Download
+https://github.com/scienceasdf/easyAuto/releases
+
 ### Contact and Donate
 My email: (scienceasdf@126.com)   (topkingshen@qq.com) for bug reporting, ideas
 pooling and suggestions for improvement.
@@ -23,5 +26,7 @@ pooling and suggestions for improvement.
 <p align="center">
  <img src="QR.png" width="460px"/>
 </p>
+
+
 
 
