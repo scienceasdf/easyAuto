@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+*.user
+*.autosave
+trans.cpp.autosave
+trans.cpp.autosave
