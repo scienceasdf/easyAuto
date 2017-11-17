@@ -150,6 +150,23 @@ void trans::phaseMargin(double *margin, double *freq, double initialGuess)
     if(*margin > 180){
         *margin = *margin - 360.0;
     }
+
+    /*still much more tests are needed:
+     num={1000,1000.1,100};
+     den={0,0,0,1,.011,.00001};
+    44.4593 1.26474
+    292.677 6.56015e+07
+
+    num={1000,1000.1,100};
+    den={0,0,0,1,.011,.00001};
+    40.70107 78.8029
+    -38.9894 3.35205
+
+
+
+
+
+    */
 }
 
 /// @brief Calculating the gain margin and the -180 degree phase crossing frequency
@@ -271,18 +288,6 @@ std::vector<std::complex<double>> roots
         res.push_back(eivals(i));
     }
 
-    //std::sort(res.begin(),res.end(),
-    //[](std::complex<double> &a, std::complex<double> &b)
-    //{return (a.real() < b.real()) ;});
-    //{return norm(a) < norm(b);});
-
-    /*std::sort(res.begin(),res.end(),
-    [&x1](std::complex<double> &a, std::complex<double> &b)
-    {return norm(a-x1) < norm(b-x1);});
-
-    std::sort(res.begin()+1,res.end(),
-    [&x2](std::complex<double> &a, std::complex<double> &b)
-    {return norm(a-x2) < norm(b-x2);});*/
 
     for(int i=0; i<matsz; ++i){
         std::swap(res[i],*std::min_element(res.begin()+i,res.end(),
@@ -291,10 +296,6 @@ std::vector<std::complex<double>> roots
 
         pre[i] = res[i];
     }
-
-    //x1=res[0];
-    //x2=res[1];
-    //x3=res[2];
 
     return res;
 }
