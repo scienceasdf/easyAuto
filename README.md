@@ -8,3 +8,9 @@ gain margin. The source can be built in Android, iOS, etc.
 * Qt 5.7 or later( For ANdroid application, you need Qt on Android environment).
 * Eigen
 
+# TODO
+* Sorting the roots of the polynomial kNUm(s)+Den(s) in a better way
+* For calculating the crossover frequency, an optimized initial guess is wanted
+* Add Bode plot, response plot and more analysis options
+* More test cases and test codes
+
