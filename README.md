@@ -8,7 +8,7 @@ gain margin. The source can be built in Android, iOS, etc.
 ### Release Download
 https://github.com/scienceasdf/easyAuto/releases
 
-The Android application package is also available in BaiduYun:
+The connection to GitHub is not very stable. Thus, the Android application package is also available in BaiduYun:
 https://pan.baidu.com/s/1bpEXicZ
 
 ### Prequisites
