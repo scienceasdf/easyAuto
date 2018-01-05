@@ -94,7 +94,7 @@ public:
     /// @param initialGuess The initial guess users give, optional parameter with defualt value 1.0
     /// @return The pointer to the result array,
     /// the first element is gain margin while the second is the -180 degrees cross frequency
-    /// The phase margin and the gain crossover frequency are calculated by secant method
+    /// The gain margin and the -180 degree phase crossing frequency are calculated by secant method
     /// @warning Users must release the memory of the pointer manually
     /// @todo The initial guess need to be optimized, or it may not convergent
     double* gainMargin(double initialGuess = 1.0);

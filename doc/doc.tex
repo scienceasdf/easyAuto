@@ -1,0 +1,227 @@
+\documentclass[utf8]{ctexart}
+\usepackage{xcolor}
+\pagestyle{plain}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+ \usepackage{subfigure}
+\usepackage[top=1in, bottom=1in, left=0.8in, right=0.8in]{geometry}
+%\documentclass[]{article}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{pdfpages}
+\usepackage[colorlinks,linkcolor=black]{hyperref}
+\usepackage{multicol}
+\usepackage{flushend,cuted}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{syntax_comment}{rgb}{0.72,0.14,0.15}	% red
+\definecolor{syntax_key}{rgb}{0.05,0.5,0.07}
+\definecolor{syntax_gray}{rgb}{0.5,0.5,0.5}
+\definecolor{syntax_string}{rgb}{0.58,0,0.82}	% mauve
+\definecolor{background}{rgb}{0.975,0.975,0.975}
+
+\lstset{ %
+  backgroundcolor=\color{background},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\ttfamily\fontspec{Consolas}, % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\itshape\color{syntax_comment}\fontspec{Consolas}\Italic,    % comment style
+%  deletekeywords={...},            % if you want to delete keywords from the given language
+%  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+%  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle={\color{syntax_key}\fontspec{Consolas}\bfseries},       % keyword style
+%  language=Octave,                 % the language of the code
+%  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{syntax_gray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{syntax_string},     % string literal style
+  tabsize=2                        % sets default tabsize to 2 spaces
+%  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\newcommand{\code}[1]{{\fontspec{Consolas} #1}}
+
+\title{transform代码文档}
+\author{申伟宏}
+
+\begin{document}
+\maketitle
+\section{介绍}
+transform代码是一段用于计算多项式、传递函数相关的C++代码，旨在在C/C++编译器中得到MATLAB相关函数的解决方案。其中，多项式实现了求值、相乘的功能，传递函数实现了求相位、求幅度、求剪切频率、求相位裕度、求幅值裕度等功能。代码在两个文件中，头文件trans.h与源文件trans.cpp.
+
+\section{用户接口}
+\subsection{多项式}
+在这段代码中，没有定义多项式的类，多项式$$f(x)=a_0+a_1x+a_2x^2+...+a_{n-1}x^{n-1}$$的表示为存储在\begin{code}{std::vector<double>}\end{code}中的系数。为了与数学上的形式相同，向量中下标为0的值代表多项式中常数项，向量中下标为1的值代表多项式中的一次项系数，以此类推，\begin{bfseries}{事实上这个正好与MATLAB中的表示相反}\end{bfseries}。
+\begin{itemize}
+	\item 多项式求值函数\code{polyCalc}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+template <class iter, class numArea>
+numArea polyCalc(iter first, iter last, numArea x);
+\end{lstlisting}
+
+\par 由于历史原因，加上为了与STL风格看齐，这个使用了迭代器和模板的函数看起来有些奇怪。这里的用户接口为输入参数是首迭代器、尾迭代器和变量$x$的值，返回\code{double}类型的多项式值。
+
+\begin{itemize}
+	\item 多项式相乘函数\code{convolution}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+std::vector<double> convolution
+(std::vector<double>& x, std::vector<double>& y);
+\end{lstlisting}
+
+	\par 这个是通常意义上的卷积，在信号处理方面有着非常广泛的应用，只不过这里我们只是使用它的一个小小部分：多项式相乘。输入参数为代表多项式的两个向量，输出也同样是代表多项式的向量。
+
+\subsection{传递函数}
+用一个类以定义传递函数：\code{trans}.这个类的构造函数与成员函数如下：
+\begin{itemize}
+	\item 构造函数
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+trans(std::vector<double> num, std::vector<double> den);
+\end{lstlisting}
+\par 构造函数的输入参数为两个多项式向量：num和den，分别代表传递函数中的分子与分母。
+\begin{itemize}
+	\item 求幅值成员函数\code{amplitude}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+double amplitude(double freq);
+\end{lstlisting}
+\par 输入为需要求幅值处的频率\code{freq}，输出为该处的幅值。
+\begin{itemize}
+	\item 求相位成员函数\code{phase}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+double phase(double freq);
+\end{lstlisting}
+\par 输入为需要求相位处的频率\code{freq}，输出为该处的相位，以角度表示结果。
+\begin{itemize}
+	\item 求增益成员函数\code{dB}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+double dB(double freq);
+\end{lstlisting}
+\par 与\code{amplitude}类似，也是求幅值，不过不同的在于输出的是分贝形式:$-20\lg A$.输入为需要求增益处的频率\code{freq}，输出为该处的增益。
+\begin{itemize}
+	\item 求增益裕度成员函数\code{gainMargin}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+void gainMargin(double* margin, double* freq, double initialGuess = 1.0);
+\end{lstlisting}
+\par 输入参数其实是用于输出的指针，因为有多个值需要输出。\code{*margin}将返回增益裕度（分贝值），\code{*freq}返回$-180^{\circ}$穿越频率。程序是通过弦截法求得穿越频率，故一个可选输入参数\code{initialGuess}为猜测初值，若用户不提供此参数则默认猜测初值为$1.0$.此外，某些系统可能会有两个及以上的穿越频率，这里只返回其中某一个值。
+\begin{itemize}
+	\item 求相位裕度成员函数\code{phaseMargin}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+void phaseMargin(double* margin, double* freq, double initialGuess = 1.0);
+\end{lstlisting}
+\par 与\code{gainMargin}类似，\code{*margin}将返回相位裕度（角度），\code{*freq}返回剪切频率。程序是通过弦截法求得剪切频率，故一个可选输入参数\code{initialGuess}为猜测初值，若用户不提供此参数则默认猜测初值为$1.0$.以上两个函数是Qt风格的接口：按地址传递参数以返回值，下面也提供另外一种风格的接口：返回指针数组。
+\begin{itemize}
+	\item 求增益裕度成员函数\code{gainMargin}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+double* gainMargin(double initialGuess = 1.0);
+\end{lstlisting}
+\par 通过指针返回增益裕度（分贝值）与$-180^\circ$穿越频率，指针数组的第一个元素为增益裕度，第二个元素为穿越频率。同样的，猜测初值\code{initialGuess}为可选参数，若不提供则默认为1.0.此外，\begin{bfseries}在这里面为数组分配的内存需要用户在外代码中手动释放\end{bfseries}\code{delete}.
+\begin{itemize}
+	\item 求相位裕度成员函数\code{phaseMargin}
+	\end{itemize}
+	\begin{lstlisting}[language=C++]
+double* phaseMargin(double initialGuess = 1.0);
+\end{lstlisting}
+\par 通过指针返回增益裕度（分贝值）与$-180^\circ$穿越频率，指针数组的第一个元素为相位裕度(角度)，第二个元素为剪切频率。猜测初值\code{initialGuess}为可选参数，若不提供则默认为1.0.此外，\begin{bfseries}在这里面为数组分配的内存需要用户在外代码中手动释放\end{bfseries}\code{delete}.
+
+\section{Benchmark}
+1、\begin{equation}\label{eqs:sys1}
+G(s)=\frac{1+s}{s^2(1+s/10)}
+\end{equation}
+求解代码如下：
+\begin{lstlisting}[language=C++]
+std::vector<double> num={1,1};
+std::vector<double> den={0,0,1,0.1};
+trans transform1(num,den);
+
+double a,b;
+transform1.phaseMargin(&a,&b);
+std::cout<<a<<"\t"<<b<<"\n";
+transform1.gainMargin(&a,&b,200);
+std::cout<<a<<"\t"<<b<<"\n";
+\end{lstlisting}
+输出结果为
+\begin{lstlisting}[language=C++]
+44.4593 1.26474
+292.677 6.56015e+07
+\end{lstlisting}
+\par 输出结果中，第一行分别为相位裕度与剪切频率，第二行分别为幅值裕度与穿越频率。实际上，(\ref{eqs:sys1})系统的穿越频率为无穷大，而在程序运行过程中当相位与$-180^{\circ}$的差的绝对值小于$10^{-5}$时程序即认为结果收敛了。
+
+2、\begin{equation}\label{eqs:sys2}
+G(s)=\frac{1000+1000.1s+100s^2}{0.00001s^5+0.011s^4+s^3}
+\end{equation}
+求解代码如下：
+\begin{lstlisting}[language=C++]
+std::vector<double> num={1000,1000.1,100};
+std::vector<double> den={0,0,0,1,.011,.00001};
+trans transform1(num,den);
+
+double a,b;
+transform1.phaseMargin(&a,&b);
+std::cout<<a<<"\t"<<b<<"\n";
+transform1.gainMargin(&a,&b,200);
+std::cout<<a<<"\t"<<b<<"\n";
+\end{lstlisting}
+输出结果为：
+\begin{lstlisting}[language=C++]
+40.0107 78.8029
+19.8164 298.325
+\end{lstlisting}
+\par 式(\ref{eqs:sys2})所示的系统有两个$-180^\circ$穿越频率，在上面的代码里我们给出了猜测初值$\omega_0=200rad/s$，如果我们不提供猜测初值，即运行代码\code{transform1.gainMargin(\&a,\&b);},则输出结果为
+\begin{lstlisting}[language=C++]
+40.0107 		78.8029
+-38.9894        3.35205
+\end{lstlisting}
+3、
+\begin{equation}\label{eqs:sys3}
+G(s)=\frac{(1+s)(1+0.1s)}{(s^3+0.01s^4)(1+0.01s)}
+\end{equation}
+求解代码如下：
+\begin{lstlisting}[language=C++]
+double a,b;
+std::vector<double> a1={1,1};
+std::vector<double> a2={1,.1};std::vector<double> b1={0,0,0,1,.01};
+std::vector<double> b2={1,.01};
+
+trans transform2(convolution(a1,a2),
+                 convolution(b1,b2));
+transform2.phaseMargin(&a,&b);
+std::cout<<a<<"\t"<<b<<"\n";
+double* ptr = transform2.gainMargin();
+std::cout<<ptr[0]<<"\t"<<ptr[1]<<"\n"; 
+delete [] ptr; /* WARNING: IT IS CRUCIAL!!! */
+\end{lstlisting}
+输出结果为：
+\begin{lstlisting}[language=C++]
+-35.649 1.15404
+21.3222 3.58122
+\end{lstlisting}
+\par 在这里，可以直接调用\code{convolution}以求出分子和分母上的多项式。这里计算增益裕度使用了返回数组指针的接口，结果保存在指针\code{ptr}的数组里，并注意释放内存。\begin{bfseries}{以上所有测试均与MATLAB运算结果一致}\end{bfseries}。
+\section{一些说明}
+\begin{itemize}
+	\item 代码在GCC 4.9.2编译器与MSVC2015编译器上均正确运行；
+	\item 为了兼顾低版本的编译器，没有使用C++11特性；
+	\item 由于大量使用标准库容器，为了提高运行效率，需要将编译选项设为-o2
+	\item TODO:优化算法(有思路)
+	\item TODO:初值合理猜测(目前没思路)
+\end{itemize}
+\end{document}

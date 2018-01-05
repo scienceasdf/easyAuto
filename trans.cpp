@@ -151,29 +151,13 @@ void trans::phaseMargin(double *margin, double *freq, double initialGuess)
         *margin = *margin - 360.0;
     }
 
-    /*still much more tests are needed:
-     num={1000,1000.1,100};
-     den={0,0,0,1,.011,.00001};
-    44.4593 1.26474
-    292.677 6.56015e+07
-
-    num={1000,1000.1,100};
-    den={0,0,0,1,.011,.00001};
-    40.70107 78.8029
-    -38.9894 3.35205
-
-
-
-
-
-    */
 }
 
 /// @brief Calculating the gain margin and the -180 degree phase crossing frequency
 /// @param initialGuess The initial guess users give, optional parameter with defualt value 1.0
 /// @return The pointer to the result array,
 /// the first element is gain margin while the second is the -180 degrees cross frequency
-/// The phase margin and the gain crossover frequency are calculated by secant method
+/// The gain margin and the -180 degree phase crossing frequency are calculated by secant method
 /// @warning Users must release the memory of the pointer manually
 /// @todo The initial guess need to be optimized, or it may not convergent
 double* trans::gainMargin(double initialGuess)
