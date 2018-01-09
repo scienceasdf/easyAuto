@@ -42,9 +42,9 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="numLabel">
      <property name="text">
-      <string>NUM</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;NUM&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -55,7 +55,7 @@
     <widget class="QLineEdit" name="denInput"/>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="denLabel">
      <property name="text">
       <string>DEN</string>
      </property>

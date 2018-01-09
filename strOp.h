@@ -11,15 +11,15 @@ std::vector<double> poly(const QString& str);
 
 std::vector<double> poly(const std::string& myString);
 
-std::vector<double> polyFromRawText(std::string& rawText);
+std::vector<double> polyFromRawText(const std::string &rawText);
 
-std::string getRichTextString(std::vector<double> poly);
+std::string getRichTextString(const std::vector<double>& poly);
 
 /// @brief Convert raw text format to rich text format of a polnomial
 /// @param rawText This is like "3 5 0 * 1 2"
 /// @return Like "(3s<sup>2</sup>+5s)(s+2)"
 /// @note The last coefficient is the const coefficient, the same with MATLAB,
 /// different from the polynomials here
-std::string getRichTextString(std::string& rawText);
+std::string getRichTextString(const std::string& rawText);
 
 #endif // STROP_H

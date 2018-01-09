@@ -42,8 +42,9 @@ FORMS += \
 
 INCLUDEPATH += d:\swh\e\eigen
 INCLUDEPATH += D:\swh\e\C++\boost_1_65_1
-
+QMAKE_CXXFLAGS += -std=c++11
 CONFIG += mobility
+CONFIG += c++11
 MOBILITY = 
 
 RESOURCES += \
@@ -59,4 +60,8 @@ DISTFILES += \
     android/gradlew.bat
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+android:{
+DEFINES += FOR_MOBILE
+}
 

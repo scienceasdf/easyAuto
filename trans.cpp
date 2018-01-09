@@ -309,4 +309,5 @@ std::vector<double> trans::unitStepResponse(double time, int slices)
             }
         }
     }
+    return res;
 }

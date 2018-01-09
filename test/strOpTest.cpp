@@ -28,7 +28,6 @@ void rawTextToPolyTest1()
     // NOTE!!! The last coefficient is the const coefficient
     std::string a = "1 1 * -1 1";
     std::vector<double> b = {1,0,-1};
-    auto x = polyFromRawText(a);
     assert(polyFromRawText(a) == b);
 }
 

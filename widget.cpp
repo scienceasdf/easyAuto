@@ -24,9 +24,13 @@ Widget::~Widget()
 
 void Widget::on_plotButton_clicked()
 {
-    std::vector<double> num = poly(ui->numInput->text());
-    std::vector<double> den = poly(ui->denInput->text());
+    std::vector<double> num = polyFromRawText(ui->numInput->text().toStdString());//poly(ui->numInput->text());
+    std::vector<double> den = polyFromRawText(ui->denInput->text().toStdString());//poly(ui->denInput->text());
 
+    ui->numLabel->setText("NUM:" + QString::fromStdString(getRichTextString(ui->numInput->text().toStdString()))
+                          + "=" + QString::fromStdString(getRichTextString(num)));
+    ui->denLabel->setText("DEN:" + QString::fromStdString(getRichTextString(ui->denInput->text().toStdString()))
+                          + "=" + QString::fromStdString(getRichTextString(den)));
 
     int big;
     if(num.size() > den.size()){

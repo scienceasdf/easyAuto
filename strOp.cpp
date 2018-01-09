@@ -6,6 +6,32 @@
 
 #include<boost/tokenizer.hpp>
 
+#ifdef FOR_MOBILE
+// FUCK NDK!!!
+// FUCK GCC!!!
+namespace std {
+
+    template <typename T>
+    std::string to_string(T value)
+    {
+        std::ostringstream os ;
+        os << value ;
+        return os.str() ;
+    }
+
+    //template <typename T>
+    double stod(const std::string& str)
+    {
+        double res;
+        std::istringstream ( str ) >> res;
+        return res;
+    }
+
+}
+
+
+#endif
+
 #ifdef QT_VERSION
 std::vector<double> poly(const QString& str)
 {
@@ -40,7 +66,7 @@ std::vector<double> poly(const std::string &myString)
 /// @return Like "(3s<sup>2</sup>+5s)(s+2)"
 /// @note The last coefficient is the const coefficient, the same with MATLAB,
 /// different from the polynomials here
-std::string getRichTextString(std::string& rawText)
+std::string getRichTextString(const std::string &rawText)
 {
     std::string res = "";
     boost::char_separator<char> sep("*");
@@ -67,8 +93,10 @@ std::string getRichTextString(std::string& rawText)
                     if(int_flag)
                         res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
                     break;
+                case 0:
+                    break;
                 default:
-                    res += (co > 0)?("+" + *iter):*iter;
+                    res += (co >= 0)?("+" + *iter):*iter;
                     res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
                     break;
                 }
@@ -79,7 +107,9 @@ std::string getRichTextString(std::string& rawText)
                     res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
                     break;
                 case -1:
-                    res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                    res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
+                    break;
+                case 0:
                     break;
                 default:
                     res += *iter;
@@ -92,7 +122,7 @@ std::string getRichTextString(std::string& rawText)
                 case 0:
                     break;
                 default:
-                    res += (co > 0)?("+" + *iter):*iter;
+                    res += (co >= 0)?("+" + *iter):*iter;
                     break;
                 }
             }
@@ -103,7 +133,7 @@ std::string getRichTextString(std::string& rawText)
     return res;
 }
 
-std::vector<double> polyFromRawText(std::string& rawText)
+std::vector<double> polyFromRawText(const std::string& rawText)
 {
     std::vector<double> res = {1};
     boost::char_separator<char> sep("*");
@@ -116,13 +146,14 @@ std::vector<double> polyFromRawText(std::string& rawText)
     return res;
 }
 
-std::string getRichTextString(std::vector<double> poly)
+std::string getRichTextString(const std::vector<double> &poly)
 {
     std::string res;
     int n = poly.size();
-    std::reverse(poly.begin(),poly.end());
+    auto copy = poly;
+    std::reverse(copy.begin(),copy.end());
     int m = n;
-    for(auto iter=poly.begin(); iter!=poly.end();++iter){
+    for(auto iter=copy.begin(); iter!=copy.end();++iter){
         --n;
         double co = *iter;
         int co_int = static_cast<int>(co);
@@ -143,8 +174,10 @@ std::string getRichTextString(std::vector<double> poly)
                 if(int_flag)
                     res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
                 break;
+            case 0:
+                break;
             default:
-                res += (co > 0)?("+" + numStr):numStr;
+                res += (co >= 0)?("+" + numStr):numStr;
                 res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
                 break;
             }
@@ -155,7 +188,9 @@ std::string getRichTextString(std::vector<double> poly)
                 res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
                 break;
             case -1:
-                res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
+                break;
+            case 0:
                 break;
             default:
                 res += numStr;
@@ -168,7 +203,7 @@ std::string getRichTextString(std::vector<double> poly)
             case 0:
                 break;
             default:
-                res += (co > 0)?("+" + numStr):numStr;
+                res += (co >= 0)?("+" + numStr):numStr;
                 break;
             }
         }
