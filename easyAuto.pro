@@ -27,18 +27,21 @@ SOURCES += \
         main.cpp \
         widget.cpp \
     trans.cpp \
-    form.cpp
+    form.cpp \
+    strOp.cpp
 
 HEADERS += \
         widget.h \
     trans.h \
-    form.h
+    form.h \
+    strOp.h
 
 FORMS += \
         widget.ui \
     form.ui
 
 INCLUDEPATH += d:\swh\e\eigen
+INCLUDEPATH += D:\swh\e\C++\boost_1_65_1
 
 CONFIG += mobility
 MOBILITY = 

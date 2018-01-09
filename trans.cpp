@@ -16,7 +16,7 @@ inline double norm(std::complex<double> &a)
 /// @brief Calculating the i'th value of the convolution of two arrays
 /// @param x The first array
 /// @param y The second array
-double convolution(std::vector<double>& x, std::vector<double>& y, int n)
+double convolution(const std::vector<double>& x, const std::vector<double>& y, int n)
 {
     double result = 0;
     int an = x.size();
@@ -34,7 +34,7 @@ double convolution(std::vector<double>& x, std::vector<double>& y, int n)
 /// @param x The first array
 /// @param y The second array
 /// It can also represent the multiplier result of two polynomials
-std::vector<double> convolution(std::vector<double>& x, std::vector<double>& y)
+std::vector<double> convolution(const std::vector<double>& x, const std::vector<double>& y)
 {
     int an = x.size();
     int bn = y.size();
@@ -282,4 +282,31 @@ std::vector<std::complex<double>> roots
     }
 
     return res;
+}
+
+/// @brief Calculating the unit step response of a transform function
+/// @param time The simulation end time (The begin time is 0)
+/// @param slices The slices of the simulation, thus the step time is time divide slices
+/// Thanks to C++11, the move semantic can make return elegant
+std::vector<double> trans::unitStepResponse(double time, int slices)
+{
+    int n = mDen.size() - 1;
+    Eigen::MatrixXd A(n,n);
+    Eigen::MatrixXd B(n,1);
+    Eigen::MatrixXd C(1,n);
+    std::vector<double> res(slices);
+
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < n; ++j){
+            if(i == j + 1){
+                A(i,j) = 1.0;
+            }
+            else if(j == n - 1){
+                A(i,j) = mDen[i] / mDen[n];
+            }
+            else{
+                A(i,j) = 0;
+            }
+        }
+    }
 }

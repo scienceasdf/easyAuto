@@ -7,6 +7,8 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 
+#include "strOp.h"
+
 QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
@@ -36,6 +38,6 @@ private:
     QChart* chart;
 };
 
-std::vector<double> poly(const QString& str);
+
 
 #endif // WIDGET_H

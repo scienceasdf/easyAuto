@@ -36,13 +36,13 @@ numArea polyCalc(iter first, iter last, numArea x)
 /// @brief Calculating the i'th value of the convolution of two arrays
 /// @param x The first array
 /// @param y The second array
-double convolution(std::vector<double>& x, std::vector<double>& y, int n);
+double convolution(const std::vector<double> &x, const std::vector<double> &y, int n);
 
 /// @brief Calculating the convolution of two arrays
 /// @param x The first array
 /// @param y The second array
 /// It can also represent the multiplier result of two polynomials
-std::vector<double> convolution(std::vector<double>& x, std::vector<double>& y);
+std::vector<double> convolution(const std::vector<double> &x, const std::vector<double> &y);
 
 /// This is a transform function class, with the implementation of gain margin and phase margin
 /// @todo The implementation of std::complex<double> is of low efficiency,
@@ -107,10 +107,19 @@ public:
     /// @todo The initial guess need to be optimized, or it may not convergent
     double* phaseMargin(double initialGuess = 1.0);
 
+    /// @brief Calculating the unit step response of a transform function
+    /// @param time The simulation end time (The begin time is 0)
+    /// @param slices The slices of the simulation, thus the step time is time divide slices
+    /// Thanks to C++11, the move semantic can make return elegant
+    std::vector<double> unitStepResponse(double time, int slices = 100);
+
+    //std::vector<double> response(double time, int slices = 100);
+
 private:
     std::vector<double> mNum;
     std::vector<double> mDen;
 };
+
 
 std::vector<double> coeff(const std::vector<double> &num, const std::vector<double> &den, double gain);
 

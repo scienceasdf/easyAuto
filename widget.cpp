@@ -5,6 +5,7 @@
 #include <fstream>
 #include "trans.h"
 #include "form.h"
+#include "strOp.h"
 
 
 Widget::Widget(QWidget *parent) :
@@ -20,25 +21,13 @@ Widget::~Widget()
     delete ui;
 }
 
-std::vector<double> poly(const QString& str)
-{
-    std::string myString = str.toStdString();
-    std::stringstream iss( myString );
-
-    double number;
-    std::vector<double> res;
-    while ( iss >> number )
-      res.push_back( number );
-
-    return res;
-}
 
 void Widget::on_plotButton_clicked()
 {
     std::vector<double> num = poly(ui->numInput->text());
     std::vector<double> den = poly(ui->denInput->text());
-    std::reverse(num.begin(),num.end());
-    std::reverse(den.begin(),den.end());
+    //std::reverse(num.begin(),num.end());
+    //std::reverse(den.begin(),den.end());
 
 
 
