@@ -2,6 +2,7 @@
 #include "trans.h"
 
 #include <sstream>
+#include <iostream>
 
 #include<boost/tokenizer.hpp>
 
@@ -109,8 +110,68 @@ std::vector<double> polyFromRawText(std::string& rawText)
     boost::tokenizer<boost::char_separator<char>> tok(rawText,sep);
     for(boost::tokenizer<boost::char_separator<char>>::iterator beg=tok.begin(); beg!=tok.end();++beg){
         auto vec = poly(*beg);
-        std::reverse(vec.begin(),vec.end());
         res = convolution(res,vec);
+    }
+
+    return res;
+}
+
+std::string getRichTextString(std::vector<double> poly)
+{
+    std::string res;
+    int n = poly.size();
+    std::reverse(poly.begin(),poly.end());
+    int m = n;
+    for(auto iter=poly.begin(); iter!=poly.end();++iter){
+        --n;
+        double co = *iter;
+        int co_int = static_cast<int>(co);
+
+        std::stringstream ss;
+        ss<<co;
+
+        std::string   numStr=ss.str();
+
+        bool int_flag = fabs(co_int - co) < 1e-5;
+        if(n != m - 1 && n != 0){
+            switch (co_int) {
+            case 1:
+                if(int_flag)
+                    res +=(n == 1)?"+s":"+s<sup>" + std::to_string(n) + "</sup>";
+                break;
+            case -1:
+                if(int_flag)
+                    res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
+                break;
+            default:
+                res += (co > 0)?("+" + numStr):numStr;
+                res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                break;
+            }
+        }
+        if(n == m - 1 && n != 0){
+            switch (co_int) {
+            case 1:
+                res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                break;
+            case -1:
+                res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                break;
+            default:
+                res += numStr;
+                res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                break;
+            }
+        }
+        if(n == 0){
+            switch (co_int) {
+            case 0:
+                break;
+            default:
+                res += (co > 0)?("+" + numStr):numStr;
+                break;
+            }
+        }
     }
 
     return res;

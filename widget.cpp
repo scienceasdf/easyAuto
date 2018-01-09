@@ -26,9 +26,6 @@ void Widget::on_plotButton_clicked()
 {
     std::vector<double> num = poly(ui->numInput->text());
     std::vector<double> den = poly(ui->denInput->text());
-    //std::reverse(num.begin(),num.end());
-    //std::reverse(den.begin(),den.end());
-
 
 
     int big;

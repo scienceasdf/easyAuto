@@ -13,7 +13,7 @@ std::vector<double> poly(const std::string& myString);
 
 std::vector<double> polyFromRawText(std::string& rawText);
 
-//std::string getRichTextString(std::vector<double> poly);
+std::string getRichTextString(std::vector<double> poly);
 
 /// @brief Convert raw text format to rich text format of a polnomial
 /// @param rawText This is like "3 5 0 * 1 2"

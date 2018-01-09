@@ -2,6 +2,7 @@
 #include "stroptest.h"
 
 #include <cassert>
+#include <iostream>
 
 void richTextTestCase1();
 void rawTextToPolyTest1();
@@ -27,6 +28,7 @@ void rawTextToPolyTest1()
     // NOTE!!! The last coefficient is the const coefficient
     std::string a = "1 1 * -1 1";
     std::vector<double> b = {1,0,-1};
+    auto x = polyFromRawText(a);
     assert(polyFromRawText(a) == b);
 }
 
@@ -41,5 +43,7 @@ void rawTextToPolyTest3()
 {
     std::string a = "1 2 3 * -3 1";
     std::vector<double> b = {3   , -7  ,  -5    , -3};
-    assert(polyFromRawText(a) == b);
+    auto poly = polyFromRawText(a);
+    assert(poly == b);
+    assert(getRichTextString(poly) == "-3s<sup>3</sup>-5s<sup>2</sup>-7s+3");
 }
