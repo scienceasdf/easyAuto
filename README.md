@@ -14,16 +14,17 @@ https://pan.baidu.com/s/1bpEXicZ
 ### Prequisites
 * Qt 5.7 or later( For Android application, you need Qt on Android environment).
 * Eigen
+* Boost::tokenizer
 
 ### TODO
-* Sorting the roots of the polynomial kNUm(s)+Den(s) in a better way
+* Sorting the roots of the polynomial kNum(s)+Den(s) in a better way
 * For calculating the crossover frequency, an optimized initial guess is wanted
 * Add Bode plot, response plot and more analysis options
 * More test cases and test codes
 
 ### Contact and Donate
 My email: (scienceasdf@126.com)   (topkingshen@qq.com) for bug reporting, ideas
-pooling and suggestions for improvement.
+collection and suggestions for improvement.
 
 
 
