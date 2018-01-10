@@ -30,6 +30,8 @@ private slots:
 
     void on_donateButton_clicked();
 
+    void on_figureType_currentIndexChanged(int index);
+
 private:
     Ui::Widget *ui;
 
@@ -37,6 +39,7 @@ private:
 
     void plotRootLocus(const std::vector<double> num, const std::vector<double> den);
     void plotUnitStepResponse(const std::vector<double> num, const std::vector<double> den);
+    void plotUnitRampResponse(const std::vector<double> num, const std::vector<double> den);
 
     QChart* chart;
 };

@@ -9,7 +9,10 @@
 #include <vector>
 #include <complex>
 #include <cmath>
+
+#ifndef NO_EIGEN
 #include <Eigen/Core>
+#endif
 
 const double pi = 3.141592653589793;
 const double degPerRad = 180.0 / pi;
@@ -107,13 +110,21 @@ public:
     /// @todo The initial guess need to be optimized, or it may not convergent
     double* phaseMargin(double initialGuess = 1.0);
 
+#ifndef NO_EIGEN
     /// @brief Calculating the unit step response of a transform function
     /// @param time The simulation end time (The begin time is 0)
     /// @param slices The slices of the simulation, thus the step time is time divide slices
     /// Thanks to C++11, the move semantic can make return elegant
-    std::vector<double> unitStepResponse(double time, int slices = 100);
+    std::vector<double> unitStepResponse(double time, int slices = 200);
+
+    /// @brief Calculating the unit ramp response of a transform function
+    /// @param time The simulation end time (The begin time is 0)
+    /// @param slices The slices of the simulation, thus the step time is time divide slices
+    /// Thanks to C++11, the move semantic can make return elegant
+    std::vector<double> unitRampResponse(double time, int slices = 200);
 
     //std::vector<double> response(double time, int slices = 100);
+#endif
 
 private:
     std::vector<double> mNum;
@@ -123,9 +134,10 @@ private:
 
 std::vector<double> coeff(const std::vector<double> &num, const std::vector<double> &den, double gain);
 
+#ifndef NO_EIGEN
 std::vector<std::complex<double>> roots
 (const std::vector<double> coeffs);
-
+#endif
 
 
 #endif // BASIS_H

@@ -43,6 +43,8 @@ void Widget::on_plotButton_clicked()
     case 1:
         plotUnitStepResponse(num,den);
         break;
+    case 2:
+        plotUnitRampResponse(num,den);
     default:
         break;
     }
@@ -109,11 +111,6 @@ void Widget::plotRootLocus(const std::vector<double> num, const std::vector<doub
 
     std::vector<std::complex<double>> polyRoot;
 
-    //std::ofstream fout("D://roots.txt");
-    //if(!fout.is_open()){
-
-    //}
-
     QLineSeries **series = new QLineSeries*[big];
     for(int i=0;i<big;++i){
         series[i] = new QLineSeries();
@@ -127,9 +124,7 @@ void Widget::plotRootLocus(const std::vector<double> num, const std::vector<doub
         polyRoot = roots(coeffs);
         for(int j=0; j<big-1; ++j){
             series[j]->append(polyRoot[j].real(),polyRoot[j].imag());
-            //fout<<polyRoot[j]<<"\t";
         }
-        //fout<<"\n";
 
     }
 
@@ -160,10 +155,6 @@ void Widget::plotRootLocus(const std::vector<double> num, const std::vector<doub
     }
 
     chart->createDefaultAxes();
-    //chart->axisX()->setTitleText("Re");
-    //chart->axisY()->setTitleText("Im");
-    //chart->axisX()->setRange(-5,2);
-    //chart->axisY()->setRange(-3.5,3.5);
 
     ui->plot->setChart(chart);
     ui->plot->setRenderHint(QPainter::Antialiasing);
@@ -185,29 +176,21 @@ void Widget::plotUnitStepResponse(const std::vector<double> num, const std::vect
     QLineSeries **series = new QLineSeries*[1];
     for(int i=0;i<1;++i){
         series[i] = new QLineSeries();
-
     }
 
-    auto res = tsfunc.unitStepResponse(5);
+    double time = ui->KmaxInput->text().toDouble();
+    auto res = tsfunc.unitStepResponse(time);
 
-    for(int i=0; i<100; ++i){
-        series[0]->append(static_cast<double>(i) / 5.0,res[i]);
-
+    for(int i=0; i<200; ++i){
+        series[0]->append(static_cast<double>(i) * time / 200.0,res[i]);
     }
-
-
 
     ui->plot->chart()->removeAllSeries();
 
     chart->legend()->hide();
     for(int i=0; i<1; ++i){
         series[i]->setUseOpenGL(true);
-        //QPen pen = series[i]->pen();
-        //pen.setWidth(3);
-        //series[i]->setPen(pen);
-        //series[i]->setPen(pen2);
         chart->addSeries(series[i]);
-
     }
 
     chart->createDefaultAxes();
@@ -215,4 +198,60 @@ void Widget::plotUnitStepResponse(const std::vector<double> num, const std::vect
 
     ui->plot->setChart(chart);
     ui->plot->setRenderHint(QPainter::Antialiasing);
+}
+
+void Widget::plotUnitRampResponse(const std::vector<double> num, const std::vector<double> den)
+{
+    int big;
+    if(num.size() > den.size()){
+        big = num.size();
+    }
+    else{
+        big = den.size();
+    }
+
+    trans tsfunc(num,den);
+
+    QLineSeries **series = new QLineSeries*[1];
+    for(int i=0;i<1;++i){
+        series[i] = new QLineSeries();
+    }
+
+    double time = ui->KmaxInput->text().toDouble();
+    auto res = tsfunc.unitRampResponse(time);
+
+    for(int i=0; i<200; ++i){
+        series[0]->append(static_cast<double>(i) * time / 200.0,res[i]);
+    }
+
+    ui->plot->chart()->removeAllSeries();
+
+    chart->legend()->hide();
+    for(int i=0; i<1; ++i){
+        series[i]->setUseOpenGL(true);
+        chart->addSeries(series[i]);
+
+    }
+
+    chart->createDefaultAxes();
+
+    ui->plot->setChart(chart);
+    ui->plot->setRenderHint(QPainter::Antialiasing);
+}
+
+void Widget::on_figureType_currentIndexChanged(int index)
+{
+    switch (index) {
+    case 0:
+        ui->rangeLabel->setText("Kmax");
+        break;
+    case 1:
+        ui->rangeLabel->setText("Tmax");
+        break;
+    case 2:
+        ui->rangeLabel->setText("Tmax");
+        break;
+    default:
+        break;
+    }
 }
