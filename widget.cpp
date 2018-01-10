@@ -14,6 +14,9 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
     chart = new QChart();
+
+    ui->numLabel->setWordWrap(true);
+    ui->denLabel->setWordWrap(true);
 }
 
 Widget::~Widget()

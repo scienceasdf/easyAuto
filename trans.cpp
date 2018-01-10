@@ -125,7 +125,7 @@ void trans::phaseMargin(double *margin, double *freq, double initialGuess)
         ++iter;
     } while(std::abs(amplitude(x1) - 1.0) > 1e-5 && iter<20);
 
-    if(iter>=20){
+    if(iter>=20 || x1 < 0){
         x0 = initialGuess * .03;
         x1 = 1.5 * x0;
         x,y0,y1;

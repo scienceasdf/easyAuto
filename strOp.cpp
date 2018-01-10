@@ -86,15 +86,18 @@ std::string getRichTextString(const std::string &rawText)
             if(n != m - 1 && n != 0){
                 switch (co_int) {
                 case 1:
-                    if(int_flag)
+                    if(int_flag){
                         res +=(n == 1)?"+s":"+s<sup>" + std::to_string(n) + "</sup>";
-                    break;
+                        break;
+                    }
                 case -1:
-                    if(int_flag)
+                    if(int_flag){
                         res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
-                    break;
+                        break;
+                    }
                 case 0:
-                    break;
+                    if(int_flag)
+                        break;
                 default:
                     res += (co >= 0)?("+" + *iter):*iter;
                     res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
@@ -104,13 +107,18 @@ std::string getRichTextString(const std::string &rawText)
             if(n == m - 1 && n != 0){
                 switch (co_int) {
                 case 1:
-                    res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
-                    break;
+                    if(int_flag){
+                        res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                        break;
+                    }
                 case -1:
-                    res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
-                    break;
+                    if(int_flag){
+                        res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
+                        break;
+                    }
                 case 0:
-                    break;
+                    if(int_flag)
+                        break;
                 default:
                     res += *iter;
                     res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
@@ -120,9 +128,15 @@ std::string getRichTextString(const std::string &rawText)
             if(n == 0){
                 switch (co_int) {
                 case 0:
-                    break;
+                    if(int_flag)
+                        break;
                 default:
-                    res += (co >= 0)?("+" + *iter):*iter;
+                    if(m == 1){
+                        res += *iter;
+                    }
+                    else{
+                        res += (co >= 0)?("+" + *iter):*iter;
+                    }
                     break;
                 }
             }
@@ -167,15 +181,18 @@ std::string getRichTextString(const std::vector<double> &poly)
         if(n != m - 1 && n != 0){
             switch (co_int) {
             case 1:
-                if(int_flag)
+                if(int_flag){
                     res +=(n == 1)?"+s":"+s<sup>" + std::to_string(n) + "</sup>";
-                break;
+                    break;
+                }
             case -1:
-                if(int_flag)
+                if(int_flag){
                     res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
-                break;
+                    break;
+                }
             case 0:
-                break;
+                if(int_flag)
+                    break;
             default:
                 res += (co >= 0)?("+" + numStr):numStr;
                 res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
@@ -185,13 +202,18 @@ std::string getRichTextString(const std::vector<double> &poly)
         if(n == m - 1 && n != 0){
             switch (co_int) {
             case 1:
-                res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
-                break;
+                if(int_flag){
+                    res +=(n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
+                    break;
+                }
             case -1:
-                res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
-                break;
+                if(int_flag){
+                    res +=(n == 1)?"-s":"-s<sup>" + std::to_string(n) + "</sup>";
+                    break;
+                }
             case 0:
-                break;
+                if(int_flag)
+                    break;
             default:
                 res += numStr;
                 res += (n == 1)?"s":"s<sup>" + std::to_string(n) + "</sup>";
@@ -201,9 +223,15 @@ std::string getRichTextString(const std::vector<double> &poly)
         if(n == 0){
             switch (co_int) {
             case 0:
-                break;
+                if(int_flag)
+                    break;
             default:
-                res += (co >= 0)?("+" + numStr):numStr;
+                if(m == 1){
+                    res += numStr;
+                }
+                else{
+                    res += (co >= 0)?("+" + numStr):numStr;
+                }
                 break;
             }
         }
