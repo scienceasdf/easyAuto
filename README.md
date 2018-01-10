@@ -12,7 +12,7 @@ The connection to GitHub is not very stable. Thus, the Android application packa
 https://pan.baidu.com/s/1c4ewHnM
 
 ### User Guide
-
+See [UserGuide](userGuide.md)
 
 ### Prequisites
 * Qt 5.7 or later( For Android application, you need Qt on Android environment).
