@@ -25,6 +25,7 @@ See [UserGuide](userGuide.md)
 * Add Bode plot
 * More test cases and test codes
 * Add automatic update function
+* Complete the document and the user guide in both English and Chinese
 
 ### Contact and Donate
 My email: (scienceasdf@126.com)   (topkingshen@qq.com) for bug reporting, ideas
