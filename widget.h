@@ -35,6 +35,9 @@ private:
 
     std::vector<double> coeffs;
 
+    void plotRootLocus(const std::vector<double> num, const std::vector<double> den);
+    void plotUnitStepResponse(const std::vector<double> num, const std::vector<double> den);
+
     QChart* chart;
 };
 

@@ -5,8 +5,11 @@
 
 #include "trans.h"
 #include <algorithm>
+#include <iostream>
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
+#include <unsupported/Eigen/MatrixFunctions>
+#include <Eigen/LU>
 
 inline double norm(std::complex<double> &a)
 {
@@ -288,13 +291,20 @@ std::vector<std::complex<double>> roots
 /// @param time The simulation end time (The begin time is 0)
 /// @param slices The slices of the simulation, thus the step time is time divide slices
 /// Thanks to C++11, the move semantic can make return elegant
+/// Here I use RK45 algorithm, as matrix exponential is not easy for singularity cases
 std::vector<double> trans::unitStepResponse(double time, int slices)
 {
-    int n = mDen.size() - 1;
+    std::vector<double> s(2);
+    s[0] = 0; s[1] = 1;
+    std::vector<double> Den = mDen;//convolution(mDen,s);
+    int n = Den.size() - 1;
     Eigen::MatrixXd A(n,n);
     Eigen::MatrixXd B(n,1);
     Eigen::MatrixXd C(1,n);
     std::vector<double> res(slices);
+
+    int m = mNum.size();
+    Eigen::MatrixXd x = Eigen::MatrixXd::Zero(n,1);
 
     for(int i = 0; i < n; ++i){
         for(int j = 0; j < n; ++j){
@@ -302,12 +312,36 @@ std::vector<double> trans::unitStepResponse(double time, int slices)
                 A(i,j) = 1.0;
             }
             else if(j == n - 1){
-                A(i,j) = mDen[i] / mDen[n];
+                A(i,j) = -Den[i] / Den[n];
             }
             else{
                 A(i,j) = 0;
             }
         }
+
+        B(i) = (i < m)?mNum[i] / Den[n]:0;
+        C(i) = 0;
     }
+    C(n-1) = 1.0;
+
+    Eigen::MatrixXd invA = A.inverse() * B;
+
+    double h = time / static_cast<double>(slices);
+
+    for(int i=0; i<slices; ++i){
+        double t = time / static_cast<double>(slices) * static_cast<double>(i);
+        Eigen::MatrixXd result = C * x;
+
+        res[i] = result(0);
+
+        Eigen::MatrixXd k1 = A * x + B;
+        Eigen::MatrixXd k2 = A * (x + .5 * h * k1) + B;
+        Eigen::MatrixXd k3 = A * (x + .5 * h * k2) + B;
+        Eigen::MatrixXd k4 = A * (x + h * k3) + B;
+
+        x += h * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0;
+
+    }
+
     return res;
 }

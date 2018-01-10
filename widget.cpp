@@ -17,6 +17,7 @@ Widget::Widget(QWidget *parent) :
 
     ui->numLabel->setWordWrap(true);
     ui->denLabel->setWordWrap(true);
+
 }
 
 Widget::~Widget()
@@ -35,6 +36,69 @@ void Widget::on_plotButton_clicked()
     ui->denLabel->setText("DEN:" + QString::fromStdString(getRichTextString(ui->denInput->text().toStdString()))
                           + "=" + QString::fromStdString(getRichTextString(den)));
 
+    switch (ui->figureType->currentIndex()) {
+    case 0:
+        plotRootLocus(num,den);
+        break;
+    case 1:
+        plotUnitStepResponse(num,den);
+        break;
+    default:
+        break;
+    }
+
+    if(num.size() < den.size()){
+
+        trans tsfunc(num,den);
+        double phaseMargin, freq1;
+        tsfunc.phaseMargin(&phaseMargin,&freq1);
+        double gainMargin, freq2;
+        tsfunc.gainMargin(&gainMargin,&freq2);
+
+        ui->freq1Label->setText("剪切频率:" + QString::number(freq1) + "Hz");
+        ui->phaseMarginLabel->setText("相位裕度:" + QString::number(phaseMargin)+"°");
+        ui->freq2Label->setText("穿越频率:" + QString::number(freq2) + "Hz");
+        ui->gainMarginLabel->setText("幅值裕度:" + QString::number(gainMargin)+"dB");
+    }
+
+}
+
+void Widget::getCoeffs(const std::vector<double> &num, const std::vector<double> &den, double gain)
+{
+    int big,small;
+    bool flag;
+    if(num.size() > den.size()){
+        big = num.size();
+        small = den.size();
+        flag = true;
+    }
+    else{
+        big = den.size();
+        small = num.size();
+        flag = false;
+    }
+
+    coeffs.resize(big);
+
+    for(int i=0; i<big; ++i){
+        if(i < small){
+            coeffs[i] = gain * num[i] + den[i];
+        }
+        else{
+            coeffs[i] = (flag)?gain * num[i]:den[i];
+        }
+    }
+
+}
+
+void Widget::on_donateButton_clicked()
+{
+    Form* dnt = new Form();
+    dnt->show();
+}
+
+void Widget::plotRootLocus(const std::vector<double> num, const std::vector<double> den)
+{
     int big;
     if(num.size() > den.size()){
         big = num.size();
@@ -104,52 +168,51 @@ void Widget::on_plotButton_clicked()
     ui->plot->setChart(chart);
     ui->plot->setRenderHint(QPainter::Antialiasing);
 
-    if(num.size() < den.size()){
-
-        trans tsfunc(num,den);
-        double phaseMargin, freq1;
-        tsfunc.phaseMargin(&phaseMargin,&freq1);
-        double gainMargin, freq2;
-        tsfunc.gainMargin(&gainMargin,&freq2);
-
-        ui->freq1Label->setText("剪切频率:" + QString::number(freq1) + "Hz");
-        ui->phaseMarginLabel->setText("相位裕度:" + QString::number(phaseMargin)+"°");
-        ui->freq2Label->setText("穿越频率:" + QString::number(freq2) + "Hz");
-        ui->gainMarginLabel->setText("幅值裕度:" + QString::number(gainMargin)+"dB");
-    }
-
 }
 
-void Widget::getCoeffs(const std::vector<double> &num, const std::vector<double> &den, double gain)
+void Widget::plotUnitStepResponse(const std::vector<double> num, const std::vector<double> den)
 {
-    int big,small;
-    bool flag;
+    int big;
     if(num.size() > den.size()){
         big = num.size();
-        small = den.size();
-        flag = true;
     }
     else{
         big = den.size();
-        small = num.size();
-        flag = false;
     }
 
-    coeffs.resize(big);
+    trans tsfunc(num,den);
 
-    for(int i=0; i<big; ++i){
-        if(i < small){
-            coeffs[i] = gain * num[i] + den[i];
-        }
-        else{
-            coeffs[i] = (flag)?gain * num[i]:den[i];
-        }
+    QLineSeries **series = new QLineSeries*[1];
+    for(int i=0;i<1;++i){
+        series[i] = new QLineSeries();
+
     }
 
-}
+    auto res = tsfunc.unitStepResponse(5);
 
-void Widget::on_donateButton_clicked()
-{
-    Form* dnt = new Form();
-    dnt->show();
+    for(int i=0; i<100; ++i){
+        series[0]->append(static_cast<double>(i) / 5.0,res[i]);
+
+    }
+
+
+
+    ui->plot->chart()->removeAllSeries();
+
+    chart->legend()->hide();
+    for(int i=0; i<1; ++i){
+        series[i]->setUseOpenGL(true);
+        //QPen pen = series[i]->pen();
+        //pen.setWidth(3);
+        //series[i]->setPen(pen);
+        //series[i]->setPen(pen2);
+        chart->addSeries(series[i]);
+
+    }
+
+    chart->createDefaultAxes();
+
+
+    ui->plot->setChart(chart);
+    ui->plot->setRenderHint(QPainter::Antialiasing);
 }

@@ -14,84 +14,6 @@
    <string>Widget</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="5" column="0">
-    <widget class="QtCharts::QChartView" name="plot" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QPushButton" name="plotButton">
-     <property name="text">
-      <string>画出根轨迹</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLineEdit" name="numInput"/>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="phaseMarginLabel">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="numLabel">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;NUM&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLineEdit" name="denInput"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="denLabel">
-     <property name="text">
-      <string>DEN</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="gainMarginLabel">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <widget class="QLabel" name="freq1Label">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="freq2Label">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="0">
-    <widget class="QPushButton" name="donateButton">
-     <property name="text">
-      <string>帮助</string>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="topMargin">
@@ -119,6 +41,118 @@
      </item>
     </layout>
    </item>
+   <item row="1" column="0">
+    <widget class="QLineEdit" name="numInput"/>
+   </item>
+   <item row="11" column="0">
+    <widget class="QLabel" name="phaseMarginLabel">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="numLabel">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;NUM&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLineEdit" name="denInput"/>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="freq1Label">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
+    <widget class="QLabel" name="freq2Label">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="denLabel">
+     <property name="text">
+      <string>DEN</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="gainMarginLabel">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QPushButton" name="donateButton">
+     <property name="text">
+      <string>帮助</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QtCharts::QChartView" name="plot" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QComboBox" name="figureType">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <item>
+        <property name="text">
+         <string>根轨迹</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>单位阶跃响应</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>单位斜坡响应</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>伯德图</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="plotButton">
+       <property name="text">
+        <string>画出曲线</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -133,7 +167,6 @@
  <tabstops>
   <tabstop>numInput</tabstop>
   <tabstop>denInput</tabstop>
-  <tabstop>plotButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
