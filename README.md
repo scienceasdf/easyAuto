@@ -9,7 +9,10 @@ gain margin. The source can be built in Android, iOS, etc.
 https://github.com/scienceasdf/easyAuto/releases
 
 The connection to GitHub is not very stable. Thus, the Android application package is also available in BaiduYun:
-https://pan.baidu.com/s/1bpEXicZ
+https://pan.baidu.com/s/1c4ewHnM
+
+### User Guide
+
 
 ### Prequisites
 * Qt 5.7 or later( For Android application, you need Qt on Android environment).
@@ -19,8 +22,9 @@ https://pan.baidu.com/s/1bpEXicZ
 ### TODO
 * Sorting the roots of the polynomial kNum(s)+Den(s) in a better way
 * For calculating the crossover frequency, an optimized initial guess is wanted
-* Add Bode plot, response plot and more analysis options
+* Add Bode plot
 * More test cases and test codes
+* Add automatic update function
 
 ### Contact and Donate
 My email: (scienceasdf@126.com)   (topkingshen@qq.com) for bug reporting, ideas
